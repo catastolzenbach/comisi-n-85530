@@ -100,28 +100,107 @@ npm run test:adoptions
 
 ### Construir la imagen
 
+Para construir la imagen Docker del proyecto, ejecuta el siguiente comando en la raíz del proyecto:
+
 ```bash
 docker build -t api-mascotas-adopciones .
 ```
 
+**Explicación:**
+- `docker build`: Comando para construir una imagen Docker
+- `-t api-mascotas-adopciones`: Etiqueta (tag) que se le asigna a la imagen
+- `.`: Indica que el Dockerfile está en el directorio actual
+
+**Tiempo estimado:** 2-5 minutos dependiendo de la velocidad de tu conexión a internet.
+
 ### Ejecutar el contenedor
 
+Una vez construida la imagen, puedes ejecutar el contenedor con:
+
 ```bash
-docker run -p 8080:8080 -e MONGO_URL=tu-url-mongodb -e PORT=8080 api-mascotas-adopciones
+docker run -p 8080:8080 \
+  -e MONGO_URL=tu-url-mongodb \
+  -e PORT=8080 \
+  api-mascotas-adopciones
 ```
+
+**Explicación de los parámetros:**
+- `-p 8080:8080`: Mapea el puerto 8080 del contenedor al puerto 8080 de tu máquina
+- `-e MONGO_URL=tu-url-mongodb`: Variable de entorno para la URL de MongoDB
+  - Ejemplo local: `mongodb://localhost:27017/mascotas`
+  - Ejemplo remoto: `mongodb+srv://usuario:password@cluster.mongodb.net/mascotas`
+- `-e PORT=8080`: Variable de entorno para el puerto de la aplicación
+- `api-mascotas-adopciones`: Nombre de la imagen a ejecutar
+
+**Ejemplo completo con MongoDB local:**
+```bash
+docker run -p 8080:8080 \
+  -e MONGO_URL=mongodb://host.docker.internal:27017/mascotas \
+  -e PORT=8080 \
+  api-mascotas-adopciones
+```
+
+**Ejemplo con MongoDB remoto (MongoDB Atlas):**
+```bash
+docker run -p 8080:8080 \
+  -e MONGO_URL=mongodb+srv://usuario:password@cluster.mongodb.net/mascotas \
+  -e PORT=8080 \
+  api-mascotas-adopciones
+```
+
+**Nota:** Si usas MongoDB local, asegúrate de que MongoDB esté corriendo en tu máquina o usa Docker Compose (ver sección más abajo).
 
 ### Docker Hub
 
-La imagen de Docker está disponible en Docker Hub:
+#### Subir la imagen a Docker Hub
 
-🔗 **Link de la imagen en Docker Hub:** [AQUÍ VA EL LINK DE TU IMAGEN EN DOCKERHUB]
+Para subir la imagen a Docker Hub, sigue estos pasos:
 
-Para usar la imagen desde Docker Hub:
+1. **Inicia sesión en Docker Hub:**
+```bash
+docker login
+```
+
+2. **Construye la imagen con tu nombre de usuario de Docker Hub:**
+```bash
+docker build -t tu-usuario-dockerhub/api-mascotas-adopciones .
+```
+
+3. **Etiqueta la imagen para Docker Hub:**
+```bash
+docker tag api-mascotas-adopciones tu-usuario-dockerhub/api-mascotas-adopciones:latest
+```
+
+4. **Sube la imagen a Docker Hub:**
+```bash
+docker push tu-usuario-dockerhub/api-mascotas-adopciones:latest
+```
+
+5. **Una vez subida, tu imagen estará disponible en:**
+```
+https://hub.docker.com/r/tu-usuario-dockerhub/api-mascotas-adopciones
+```
+
+🔗 **Link de la imagen en Docker Hub:** [Reemplazar con el link real después de subir la imagen]
+
+**Ejemplo:** `https://hub.docker.com/r/tu-usuario/api-mascotas-adopciones`
+
+#### Usar la imagen desde Docker Hub
+
+Una vez que la imagen esté disponible en Docker Hub, puedes usarla directamente:
 
 ```bash
-docker pull tu-usuario/api-mascotas-adopciones:latest
-docker run -p 8080:8080 -e MONGO_URL=tu-url-mongodb -e PORT=8080 tu-usuario/api-mascotas-adopciones:latest
+# Descargar la imagen desde Docker Hub
+docker pull tu-usuario-dockerhub/api-mascotas-adopciones:latest
+
+# Ejecutar el contenedor
+docker run -p 8080:8080 \
+  -e MONGO_URL=tu-url-mongodb \
+  -e PORT=8080 \
+  tu-usuario-dockerhub/api-mascotas-adopciones:latest
 ```
+
+**Nota:** Reemplaza `tu-usuario-dockerhub` con tu nombre de usuario real de Docker Hub.
 
 ### Docker Compose (Opcional)
 
@@ -155,6 +234,57 @@ Ejecutar con:
 ```bash
 docker-compose up
 ```
+
+Para ejecutar en segundo plano:
+```bash
+docker-compose up -d
+```
+
+Para detener los contenedores:
+```bash
+docker-compose down
+```
+
+### Utilizar el proyecto con Docker
+
+Una vez que el contenedor esté corriendo, puedes:
+
+1. **Acceder a la API:**
+   - Base URL: `http://localhost:8080`
+   - Documentación Swagger: `http://localhost:8080/api/docs`
+
+2. **Probar los endpoints:**
+   ```bash
+   # Obtener todos los usuarios
+   curl http://localhost:8080/api/users
+   
+   # Obtener todas las mascotas
+   curl http://localhost:8080/api/pets
+   
+   # Generar datos mock
+   curl http://localhost:8080/api/mocks/mockingusers
+   ```
+
+3. **Ver logs del contenedor:**
+   ```bash
+   docker logs <container-id>
+   # O si usas docker-compose:
+   docker-compose logs -f
+   ```
+
+4. **Detener el contenedor:**
+   ```bash
+   docker stop <container-id>
+   # O con docker-compose:
+   docker-compose down
+   ```
+
+5. **Reiniciar el contenedor:**
+   ```bash
+   docker restart <container-id>
+   # O con docker-compose:
+   docker-compose restart
+   ```
 
 ## 📦 Estructura del Proyecto
 
