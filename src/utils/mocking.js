@@ -1,7 +1,8 @@
 import bcrypt from 'bcrypt';
+import { faker } from '@faker-js/faker';
 
 /**
- * Genera usuarios mock según un parámetro numérico
+ * Genera usuarios mock según un parámetro numérico usando faker-js
  * @param {number} numUsers - Cantidad de usuarios a generar
  * @returns {Array} Array de usuarios generados
  */
@@ -11,11 +12,11 @@ export const generateUsers = (numUsers) => {
     
     for (let i = 0; i < numUsers; i++) {
         const user = {
-            first_name: `Usuario${i + 1}`,
-            last_name: `Apellido${i + 1}`,
-            email: `user${i + 1}@example.com`,
+            first_name: faker.person.firstName(),
+            last_name: faker.person.lastName(),
+            email: faker.internet.email(),
             password: bcrypt.hashSync('coder123', 10), // Contraseña encriptada
-            role: roles[Math.floor(Math.random() * roles.length)], // 'user' o 'admin'
+            role: faker.helpers.arrayElement(roles), // 'user' o 'admin'
             pets: [] // Array vacío
         };
         users.push(user);
@@ -25,7 +26,7 @@ export const generateUsers = (numUsers) => {
 };
 
 /**
- * Genera pets mock según un parámetro numérico
+ * Genera pets mock según un parámetro numérico usando faker-js
  * @param {number} numPets - Cantidad de pets a generar
  * @returns {Array} Array de pets generados
  */
@@ -35,9 +36,9 @@ export const generatePets = (numPets) => {
     
     for (let i = 0; i < numPets; i++) {
         const pet = {
-            name: `Mascota${i + 1}`,
-            specie: species[Math.floor(Math.random() * species.length)],
-            birthDate: new Date(2020 + Math.floor(Math.random() * 4), Math.floor(Math.random() * 12), Math.floor(Math.random() * 28) + 1),
+            name: faker.person.firstName(), // Nombres realistas para mascotas
+            specie: faker.helpers.arrayElement(species),
+            birthDate: faker.date.birthdate({ min: 0, max: 10, mode: 'age' }), // Fechas de nacimiento realistas
             adopted: false,
             owner: null,
             image: ''

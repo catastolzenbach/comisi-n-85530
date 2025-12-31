@@ -5,7 +5,7 @@ import petModel from '../dao/models/Pet.js';
 
 /**
  * Endpoint GET /mockingpets
- * Genera y devuelve una lista de pets mock
+ * Genera y devuelve una lista de pets mock usando faker-js
  */
 const getMockingPets = async (req, res) => {
     try {
@@ -19,7 +19,7 @@ const getMockingPets = async (req, res) => {
 
 /**
  * Endpoint GET /mockingusers
- * Genera y devuelve 50 usuarios mock con el formato de Mongo
+ * Genera y devuelve 50 usuarios mock usando faker-js con el formato de Mongo
  */
 const getMockingUsers = async (req, res) => {
     try {
@@ -33,7 +33,7 @@ const getMockingUsers = async (req, res) => {
 
 /**
  * Endpoint POST /generateData
- * Genera e inserta usuarios y pets en la base de datos según parámetros numéricos
+ * Genera e inserta usuarios y pets en la base de datos según parámetros numéricos usando faker-js
  */
 const generateData = async (req, res) => {
     try {
