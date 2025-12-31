@@ -181,26 +181,30 @@ docker push tu-usuario-dockerhub/api-mascotas-adopciones:latest
 https://hub.docker.com/r/tu-usuario-dockerhub/api-mascotas-adopciones
 ```
 
-🔗 **Link de la imagen en Docker Hub:** [Reemplazar con el link real después de subir la imagen]
-
-**Ejemplo:** `https://hub.docker.com/r/tu-usuario/api-mascotas-adopciones`
+🔗 **Link de la imagen en Docker Hub:** https://hub.docker.com/r/catastolzenbach/api-mascotas-adopciones
 
 #### Usar la imagen desde Docker Hub
 
-Una vez que la imagen esté disponible en Docker Hub, puedes usarla directamente:
+La imagen ya está disponible en Docker Hub y puedes usarla directamente:
 
 ```bash
 # Descargar la imagen desde Docker Hub
-docker pull tu-usuario-dockerhub/api-mascotas-adopciones:latest
+docker pull catastolzenbach/api-mascotas-adopciones:latest
 
 # Ejecutar el contenedor
 docker run -p 8080:8080 \
   -e MONGO_URL=tu-url-mongodb \
   -e PORT=8080 \
-  tu-usuario-dockerhub/api-mascotas-adopciones:latest
+  catastolzenbach/api-mascotas-adopciones:latest
 ```
 
-**Nota:** Reemplaza `tu-usuario-dockerhub` con tu nombre de usuario real de Docker Hub.
+**Ejemplo con MongoDB local:**
+```bash
+docker run -p 8080:8080 \
+  -e MONGO_URL=mongodb://host.docker.internal:27017/mascotas \
+  -e PORT=8080 \
+  catastolzenbach/api-mascotas-adopciones:latest
+```
 
 ### Docker Compose (Opcional)
 
