@@ -11,6 +11,8 @@ API REST desarrollada con Node.js, Express y MongoDB para la gestión de usuario
 - Generación de datos mock con faker-js
 - Documentación con Swagger
 - Tests funcionales con Mocha y Chai
+- **Seguridad con Helmet** (protección de headers HTTP)
+- **Manejo centralizado de errores** con express-async-errors
 
 ## 📋 Requisitos Previos
 
@@ -322,6 +324,8 @@ comision-85530/
 - **Mocha & Chai** - Testing
 - **Supertest** - Testing HTTP
 - **Faker.js** - Generación de datos mock
+- **Helmet** - Seguridad HTTP
+- **express-async-errors** - Manejo de errores asíncronos
 - **Docker** - Contenedorización
 
 ## 📝 Notas

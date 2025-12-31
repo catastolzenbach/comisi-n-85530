@@ -1,6 +1,8 @@
+import 'express-async-errors';
 import express from 'express';
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
+import helmet from 'helmet';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import swaggerUiExpress from 'swagger-ui-express';
@@ -33,6 +35,22 @@ const swaggerOptions = {
 
 const specs = swaggerJsdoc(swaggerOptions);
 
+// Configuración de seguridad con Helmet
+app.use(
+    helmet({
+        contentSecurityPolicy: {
+            directives: {
+                "defaultSrc": ["'self'"],
+                "scriptSrc": ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net"],
+                "styleSrc": ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net"],
+                "imgSrc": ["'self'", "data:", "https:"],
+            },
+            reportOnly: false,
+        },
+        crossOriginEmbedderPolicy: false,
+    })
+);
+
 // Conexión a MongoDB (opcional - solo se conecta si hay URL válida)
 const MONGO_URL = process.env.MONGO_URL || 'URL DE MONGO';
 if (MONGO_URL && MONGO_URL !== 'URL DE MONGO' && MONGO_URL.startsWith('mongodb')) {
@@ -51,5 +69,22 @@ app.use('/api/pets',petsRouter);
 app.use('/api/adoptions',adoptionsRouter);
 app.use('/api/sessions',sessionsRouter);
 app.use('/api/mocks',mocksRouter);
+
+// Middleware de manejo de errores
+app.use((err, req, res, next) => {
+    console.error('Error:', err);
+    res.status(err.status || 500).send({
+        status: 'error',
+        error: err.message || 'Internal server error'
+    });
+});
+
+// Middleware para rutas no encontradas
+app.use((req, res) => {
+    res.status(404).send({
+        status: 'error',
+        error: 'Route not found'
+    });
+});
 
 app.listen(PORT,()=>console.log(`Listening on ${PORT}`))
